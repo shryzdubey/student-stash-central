@@ -12,8 +12,16 @@ interface User {
   name: string;
   email: string;
   bio?: string;
+  major?: string;
+  skills?: string;
+  lookingFor?: string;
   joinedDate?: string;
   listings?: number;
+  profilePicture?: string;
+  rating?: number;
+  totalReviews?: number;
+  isVerified?: boolean;
+  isCollegeVerified?: boolean;
 }
 
 const Index = () => {
@@ -92,8 +100,15 @@ const Index = () => {
     const newUser: User = {
       ...userData,
       bio: '',
+      major: '',
+      skills: '',
+      lookingFor: '',
       joinedDate: 'January 2024',
       listings: listings.filter(l => l.seller === userData.name).length,
+      rating: 4.8,
+      totalReviews: 15,
+      isVerified: true,
+      isCollegeVerified: userData.email.endsWith('.edu') || userData.email.endsWith('.org'),
     };
     setUser(newUser);
   };
@@ -106,6 +121,13 @@ const Index = () => {
   const handleUpdateBio = (bio: string) => {
     if (user) {
       const updatedUser = { ...user, bio };
+      setUser(updatedUser);
+    }
+  };
+
+  const handleUpdateProfile = (updates: Partial<User>) => {
+    if (user) {
+      const updatedUser = { ...user, ...updates };
       setUser(updatedUser);
     }
   };
@@ -189,7 +211,7 @@ const Index = () => {
                 Manage your profile information and view your marketplace activity.
               </p>
             </div>
-            <UserProfile user={user} onUpdateBio={handleUpdateBio} />
+            <UserProfile user={user} onUpdateBio={handleUpdateBio} onUpdateProfile={handleUpdateProfile} />
           </div>
         )}
       </main>
